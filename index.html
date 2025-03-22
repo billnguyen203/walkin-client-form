@@ -11,6 +11,7 @@
       padding: 20px;
       max-width: 800px;
       margin: auto;
+      position: relative;
     }
     h1, p { text-align: center; }
     form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -23,30 +24,66 @@
     legend { font-weight: bold; }
     .inline-group { display: flex; gap: 10px; align-items: center; }
     .inline-group select, .inline-group input { flex: 1; }
+    #language-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    #language-dropdown {
+      position: absolute;
+      top: 50px;
+      right: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: none;
+      flex-direction: column;
+      width: 120px;
+    }
+    #language-dropdown div {
+      padding: 8px;
+      cursor: pointer;
+    }
+    #language-dropdown div:hover {
+      background-color: #f0f0f0;
+    }
   </style>
 </head>
 <body>
   <img src="https://i.postimg.cc/JzMvw4By/ced6cf19-878b-41a5-8eb2-e2ccdd89d7df.jpg" alt="Company Logo" style="max-width: 200px; display: block; margin: 0 auto">
+  <button id="language-btn">Language ▼</button>
+  <div id="language-dropdown">
+    <div data-lang="vi">Tiếng Việt</div>
+    <div data-lang="en">English</div>
+    <div data-lang="zh">中文</div>
+  </div>
   <h1>Walk-in Client Form</h1>
   <p id="datetime"></p>
   <form id="clientForm">
-    <label>Team Member Name</label>
+    <label data-lang-key="team_member">Team Member Name</label>
     <input type="text" name="team_member">
 
-    <label>Full Name of Client</label>
+    <label data-lang-key="full_name">Full Name of Client</label>
     <input type="text" name="full_name">
 
-    <label>Register Date</label>
+    <label data-lang-key="register_date">Register Date</label>
     <input type="date" name="register_date">
 
-    <label>Gender</label>
+    <label data-lang-key="gender">Gender</label>
     <select name="gender">
       <option value="Nam">Nam</option>
       <option value="Nữ">Nữ</option>
       <option value="Khác">Khác</option>
     </select>
 
-    <label>Country & Contact Number</label>
+    <label data-lang-key="country_contact">Country & Contact Number</label>
     <div class="inline-group">
       <select name="country_code">
         <option value="+84">+84</option>
@@ -55,10 +92,10 @@
       <input type="text" name="contact_number" placeholder="Contact Number">
     </div>
 
-    <label>Email</label>
+    <label data-lang-key="email">Email</label>
     <input type="email" name="email">
 
-    <label>Social Media Type</label>
+    <label data-lang-key="social_media">Social Media Type</label>
     <select name="social_media">
       <option value="zalo">Zalo</option>
       <option value="instagram">Instagram</option>
@@ -69,13 +106,13 @@
       <option value="none">None</option>
     </select>
 
-    <label>Social Media Account Name</label>
+    <label data-lang-key="account_name">Social Media Account Name</label>
     <input type="text" name="account_name">
 
     <fieldset class="full-width">
-      <legend>Visa Information</legend>
+      <legend data-lang-key="visa_info">Visa Information</legend>
 
-      <label>Status</label>
+      <label data-lang-key="status">Status</label>
       <select name="visa_status">
         <option value="No Visa">No Visa</option>
         <option value="PR">PR</option>
@@ -85,11 +122,11 @@
         <option value="Other">Other</option>
       </select>
 
-      <label>Visa Number (optional)</label>
+      <label data-lang-key="visa_number">Visa Number (optional)</label>
       <input type="text" name="visa_number">
     </fieldset>
 
-    <label>Source</label>
+    <label data-lang-key="source">Source</label>
     <select name="source">
       <option value="walkin">Walk-in</option>
       <option value="personal">Personal</option>
@@ -98,25 +135,117 @@
       <option value="referral">Referral</option>
     </select>
 
-    <label>Source Detail</label>
+    <label data-lang-key="source_detail">Source Detail</label>
     <input type="text" name="source_detail">
 
-    <label class="full-width">Comment / Note</label>
+    <label class="full-width" data-lang-key="comments">Comment / Note</label>
     <textarea name="comments" class="full-width"></textarea>
 
     <div class="submit-btn">
-      <button type="submit">Gửi</button>
+      <button type="submit" data-lang-key="submit">Gửi</button>
     </div>
   </form>
   <p id="result" style="text-align:center; font-weight:bold; color:green;"></p>
 
   <script>
+    // Dữ liệu ngôn ngữ
+    const translations = {
+      vi: {
+        title: "Walk-in Client Form",
+        team_member: "Tên thành viên đội",
+        full_name: "Họ và tên khách hàng",
+        register_date: "Ngày đăng ký",
+        gender: "Giới tính",
+        country_contact: "Quốc gia & Số liên lạc",
+        email: "Email",
+        social_media: "Loại mạng xã hội",
+        account_name: "Tên tài khoản mạng xã hội",
+        visa_info: "Thông tin Visa",
+        status: "Trạng thái",
+        visa_number: "Số Visa (tùy chọn)",
+        source: "Nguồn",
+        source_detail: "Chi tiết nguồn",
+        comments: "Bình luận / Ghi chú",
+        submit: "Gửi"
+      },
+      en: {
+        title: "Walk-in Client Form",
+        team_member: "Team Member Name",
+        full_name: "Full Name of Client",
+        register_date: "Register Date",
+        gender: "Gender",
+        country_contact: "Country & Contact Number",
+        email: "Email",
+        social_media: "Social Media Type",
+        account_name: "Social Media Account Name",
+        visa_info: "Visa Information",
+        status: "Status",
+        visa_number: "Visa Number (optional)",
+        source: "Source",
+        source_detail: "Source Detail",
+        comments: "Comment / Note",
+        submit: "Submit"
+      },
+      zh: {
+        title: "步入客户表格",
+        team_member: "团队成员姓名",
+        full_name: "客户全名",
+        register_date: "注册日期",
+        gender: "性别",
+        country_contact: "国家及联系号码",
+        email: "电子邮件",
+        social_media: "社交媒体类型",
+        account_name: "社交媒体账户名",
+        visa_info: "签证信息",
+        status: "状态",
+        visa_number: "签证号码（可选）",
+        source: "来源",
+        source_detail: "来源详情",
+        comments: "评论 / 备注",
+        submit: "提交"
+      }
+    };
+
+    // Cập nhật ngôn ngữ
+    function updateLanguage(lang) {
+      document.querySelector('h1').textContent = translations[lang].title;
+      document.querySelectorAll('[data-lang-key]').forEach(element => {
+        const key = element.getAttribute('data-lang-key');
+        element.textContent = translations[lang][key];
+      });
+      document.querySelector('input[name="contact_number"]').placeholder = lang === 'vi' ? "Số liên lạc" : lang === 'en' ? "Contact Number" : "联系号码";
+    }
+
+    // Khởi tạo ngôn ngữ mặc định là Tiếng Việt
+    updateLanguage('vi');
+
+    // Xử lý nút Language và dropdown
+    const langBtn = document.getElementById('language-btn');
+    const langDropdown = document.getElementById('language-dropdown');
+    langBtn.addEventListener('click', function() {
+      langDropdown.style.display = langDropdown.style.display === 'flex' ? 'none' : 'flex';
+    });
+    langDropdown.querySelectorAll('div').forEach(item => {
+      item.addEventListener('click', function() {
+        updateLanguage(this.getAttribute('data-lang'));
+        langDropdown.style.display = 'none';
+      });
+    });
+    // Đóng dropdown khi click bên ngoài
+    document.addEventListener('click', function(e) {
+      if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+        langDropdown.style.display = 'none';
+      }
+    });
+
+    // Cập nhật ngày giờ
     function updateDateTime() {
       document.getElementById('datetime').innerText = new Date().toLocaleString('vi-VN');
     }
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
+    // Xử lý gửi form
     document.getElementById('clientForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const form = e.target;
@@ -128,7 +257,7 @@
       try {
         const response = await fetch('https://script.google.com/macros/s/AKfycbyTh3SjuXuj3hj2PaMW8b4q3irg5DJZ9szW89wFEIlordhO4eTE3uMztHbAnCSmOI5d/exec', {
           method: 'POST',
-          mode: 'no-cors', // Giữ no-cors để gửi dữ liệu
+          mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
