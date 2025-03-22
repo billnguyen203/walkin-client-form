@@ -5,150 +5,351 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Walk-in Client Form</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #fff;
-      padding: 20px;
-      max-width: 800px;
+      font-family: 'Roboto', Arial, sans-serif;
+      background-color: #1A1A1A;
+      color: #FFFFFF;
+      padding: 40px;
+      max-width: 900px;
       margin: auto;
       position: relative;
+      line-height: 1.6;
     }
-    h1, p { text-align: center; }
-    form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    label { font-weight: bold; }
-    input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; }
-    .full-width { grid-column: span 2; }
-    .submit-btn { grid-column: span 2; text-align: center; }
-    button { padding: 10px 20px; }
-    fieldset { border: 2px solid #ccc; padding: 15px; }
-    legend { font-weight: bold; }
-    .inline-group { display: flex; gap: 10px; align-items: center; }
-    .inline-group select, .inline-group input { flex: 1; }
+
+    h1 {
+      text-align: center;
+      color: #D4AF37;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    p {
+      text-align: center;
+      color: #B0B0B0;
+      font-size: 1.1em;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      background-color: #2A2A2A;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    label {
+      font-weight: bold;
+      color: #D4AF37;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #D4AF37;
+      border-radius: 5px;
+      background-color: #333333;
+      color: #FFFFFF;
+      font-size: 1em;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #FFD700;
+      outline: none;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .submit-btn {
+      grid-column: span 2;
+      text-align: center;
+    }
+
+    button {
+      padding: 12px 30px;
+      background-color: #D4AF37;
+      color: #1A1A1A;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #FFD700;
+    }
+
+    fieldset {
+      border: 1px solid #D4AF37;
+      padding: 20px;
+      border-radius: 5px;
+      background-color: #2A2A2A;
+    }
+
+    legend {
+      color: #D4AF37;
+      font-weight: bold;
+      padding: 0 10px;
+    }
+
+    .inline-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .inline-group select, .inline-group input {
+      flex: 1;
+    }
+
     #language-btn {
       position: absolute;
       top: 20px;
       right: 20px;
       padding: 8px 16px;
-      background-color: #f0f0f0;
-      border: 1px solid #ccc;
+      background-color: #D4AF37;
+      color: #1A1A1A;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 5px;
+      font-weight: bold;
     }
+
+    #language-btn:hover {
+      background-color: #FFD700;
+    }
+
     #language-dropdown {
       position: absolute;
-      top: 50px;
+      top: 60px;
       right: 20px;
-      background-color: #fff;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      background-color: #2A2A2A;
+      border: 1px solid #D4AF37;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       display: none;
       flex-direction: column;
-      width: 120px;
+      width: 150px;
+      border-radius: 5px;
     }
+
     #language-dropdown div {
-      padding: 8px;
+      padding: 10px;
+      color: #FFFFFF;
       cursor: pointer;
     }
+
     #language-dropdown div:hover {
-      background-color: #f0f0f0;
+      background-color: #D4AF37;
+      color: #1A1A1A;
+    }
+
+    #password-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #password-box {
+      background: #2A2A2A;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid #D4AF37;
+    }
+
+    #password-box h2 {
+      color: #D4AF37;
+      margin-bottom: 20px;
+    }
+
+    #password-box input {
+      margin: 10px 0;
+      padding: 10px;
+      width: 250px;
+      border-radius: 5px;
+      background-color: #333333;
+      color: #FFFFFF;
+      border: 1px solid #D4AF37;
+    }
+
+    #password-box button {
+      background-color: #D4AF37;
+      color: #1A1A1A;
+    }
+
+    #password-box button:hover {
+      background-color: #FFD700;
+    }
+
+    #password-error {
+      color: #FF6B6B;
+      margin-top: 10px;
+      display: none;
+    }
+
+    #main-content {
+      display: none;
+    }
+
+    #result {
+      text-align: center;
+      font-weight: bold;
+      color: #D4AF37;
+      margin-top: 20px;
+    }
+
+    img {
+      max-width: 250px;
+      display: block;
+      margin: 0 auto 20px;
+      border: 2px solid #D4AF37;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
-  <img src="https://i.postimg.cc/JzMvw4By/ced6cf19-878b-41a5-8eb2-e2ccdd89d7df.jpg" alt="Company Logo" style="max-width: 200px; display: block; margin: 0 auto">
-  <button id="language-btn">Language ▼</button>
-  <div id="language-dropdown">
-    <div data-lang="vi">Tiếng Việt</div>
-    <div data-lang="en">English</div>
-    <div data-lang="zh">中文</div>
+  <div id="password-modal">
+    <div id="password-box">
+      <h2>Enter Password</h2>
+      <input type="password" id="password-input" placeholder="Password">
+      <br>
+      <button onclick="checkPassword()">Submit</button>
+      <p id="password-error">Sai mật khẩu, vui lòng thử lại!</p>
+    </div>
   </div>
-  <h1>Walk-in Client Form</h1>
-  <p id="datetime"></p>
-  <form id="clientForm">
-    <label data-lang-key="team_member">Team Member Name</label>
-    <input type="text" name="team_member">
 
-    <label data-lang-key="full_name">Full Name of Client</label>
-    <input type="text" name="full_name">
-
-    <label data-lang-key="register_date">Register Date</label>
-    <input type="date" name="register_date">
-
-    <label data-lang-key="gender">Gender</label>
-    <select name="gender">
-      <option value="Nam">Nam</option>
-      <option value="Nữ">Nữ</option>
-      <option value="Khác">Khác</option>
-    </select>
-
-    <label data-lang-key="country_contact">Country & Contact Number</label>
-    <div class="inline-group">
-      <select name="country_code">
-        <option value="+84">+84</option>
-        <option value="+61">+61</option>
-      </select>
-      <input type="text" name="contact_number" placeholder="Contact Number">
+  <div id="main-content">
+    <img src="https://i.postimg.cc/JzMvw4By/ced6cf19-878b-41a5-8eb2-e2ccdd89d7df.jpg" alt="Company Logo" style="max-width: 200px; display: block; margin: 0 auto">
+    <button id="language-btn">Language ▼</button>
+    <div id="language-dropdown">
+      <div data-lang="vi">Tiếng Việt</div>
+      <div data-lang="en">English</div>
+      <div data-lang="zh">中文</div>
     </div>
+    <h1>Walk-in Client Form</h1>
+    <p id="datetime"></p>
+    <form id="clientForm">
+      <label data-lang-key="team_member">Team Member Name</label>
+      <input type="text" name="team_member">
 
-    <label data-lang-key="email">Email</label>
-    <input type="email" name="email">
+      <label data-lang-key="full_name">Full Name of Client</label>
+      <input type="text" name="full_name">
 
-    <label data-lang-key="social_media">Social Media Type</label>
-    <select name="social_media">
-      <option value="zalo">Zalo</option>
-      <option value="instagram">Instagram</option>
-      <option value="facebook">Facebook</option>
-      <option value="whatsapp">WhatsApp</option>
-      <option value="tiktok">TikTok</option>
-      <option value="khác">Khác</option>
-      <option value="none">None</option>
-    </select>
+      <label data-lang-key="register_date">Register Date</label>
+      <input type="date" name="register_date">
 
-    <label data-lang-key="account_name">Social Media Account Name</label>
-    <input type="text" name="account_name">
-
-    <fieldset class="full-width">
-      <legend data-lang-key="visa_info">Visa Information</legend>
-
-      <label data-lang-key="status">Status</label>
-      <select name="visa_status">
-        <option value="No Visa">No Visa</option>
-        <option value="PR">PR</option>
-        <option value="TR">TR</option>
-        <option value="Citizen">Citizen</option>
-        <option value="Tourist">Tourist</option>
-        <option value="Other">Other</option>
+      <label data-lang-key="gender">Gender</label>
+      <select name="gender">
+        <option value="Nam">Nam</option>
+        <option value="Nữ">Nữ</option>
+        <option value="Khác">Khác</option>
       </select>
 
-      <label data-lang-key="visa_number">Visa Number (optional)</label>
-      <input type="text" name="visa_number">
-    </fieldset>
+      <label data-lang-key="country_contact">Country & Contact Number</label>
+      <div class="inline-group">
+        <select name="country_code">
+          <option value="+84">+84</option>
+          <option value="+61">+61</option>
+        </select>
+        <input type="text" name="contact_number" placeholder="Contact Number">
+      </div>
 
-    <label data-lang-key="source">Source</label>
-    <select name="source">
-      <option value="walkin">Walk-in</option>
-      <option value="personal">Personal</option>
-      <option value="event">Event</option>
-      <option value="company">Company</option>
-      <option value="referral">Referral</option>
-    </select>
+      <label data-lang-key="email">Email</label>
+      <input type="email" name="email">
 
-    <label data-lang-key="source_detail">Source Detail</label>
-    <input type="text" name="source_detail">
+      <label data-lang-key="social_media">Social Media Type</label>
+      <select name="social_media">
+        <option value="zalo">Zalo</option>
+        <option value="instagram">Instagram</option>
+        <option value="facebook">Facebook</option>
+        <option value="whatsapp">WhatsApp</option>
+        <option value="tiktok">TikTok</option>
+        <option value="khác">Khác</option>
+        <option value="none">None</option>
+      </select>
 
-    <label class="full-width" data-lang-key="comments">Comment / Note</label>
-    <textarea name="comments" class="full-width"></textarea>
+      <label data-lang-key="account_name">Social Media Account Name</label>
+      <input type="text" name="account_name">
 
-    <div class="submit-btn">
-      <button type="submit" data-lang-key="submit">Gửi</button>
-    </div>
-  </form>
-  <p id="result" style="text-align:center; font-weight:bold; color:green;"></p>
+      <fieldset class="full-width">
+        <legend data-lang-key="visa_info">Visa Information</legend>
+
+        <label data-lang-key="status">Status</label>
+        <select name="visa_status">
+          <option value="No Visa">No Visa</option>
+          <option value="PR">PR</option>
+          <option value="TR">TR</option>
+          <option value="Citizen">Citizen</option>
+          <option value="Tourist">Tourist</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label data-lang-key="visa_number">Visa Number (optional)</label>
+        <input type="text" name="visa_number">
+      </fieldset>
+
+      <label data-lang-key="source">Source</label>
+      <select name="source">
+        <option value="walkin">Walk-in</option>
+        <option value="personal">Personal</option>
+        <option value="event">Event</option>
+        <option value="company">Company</option>
+        <option value="referral">Referral</option>
+      </select>
+
+      <label data-lang-key="source_detail">Source Detail</label>
+      <input type="text" name="source_detail">
+
+      <label class="full-width" data-lang-key="comments">Comment / Note</label>
+      <textarea name="comments" class="full-width"></textarea>
+
+      <div class="submit-btn">
+        <button type="submit" data-lang-key="submit">Gửi</button>
+      </div>
+    </form>
+    <p id="result" style="text-align:center; font-weight:bold; color:green;"></p>
+  </div>
 
   <script>
-    // Dữ liệu ngôn ngữ
+    const correctPassword = "auspac172swanston";
+
+    function checkPassword() {
+      const input = document.getElementById('password-input').value;
+      if (input === correctPassword) {
+        document.getElementById('password-modal').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+      } else {
+        document.getElementById('password-error').style.display = 'block';
+      }
+    }
+
+    document.getElementById('password-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkPassword();
+      }
+    });
+
     const translations = {
       vi: {
         title: "Walk-in Client Form",
@@ -206,7 +407,6 @@
       }
     };
 
-    // Cập nhật ngôn ngữ
     function updateLanguage(lang) {
       document.querySelector('h1').textContent = translations[lang].title;
       document.querySelectorAll('[data-lang-key]').forEach(element => {
@@ -216,10 +416,8 @@
       document.querySelector('input[name="contact_number"]').placeholder = lang === 'vi' ? "Số liên lạc" : lang === 'en' ? "Contact Number" : "联系号码";
     }
 
-    // Khởi tạo ngôn ngữ mặc định là Tiếng Việt
     updateLanguage('vi');
 
-    // Xử lý nút Language và dropdown
     const langBtn = document.getElementById('language-btn');
     const langDropdown = document.getElementById('language-dropdown');
     langBtn.addEventListener('click', function() {
@@ -231,21 +429,18 @@
         langDropdown.style.display = 'none';
       });
     });
-    // Đóng dropdown khi click bên ngoài
     document.addEventListener('click', function(e) {
       if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
         langDropdown.style.display = 'none';
       }
     });
 
-    // Cập nhật ngày giờ
     function updateDateTime() {
       document.getElementById('datetime').innerText = new Date().toLocaleString('vi-VN');
     }
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
-    // Xử lý gửi form
     document.getElementById('clientForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const form = e.target;
