@@ -5,158 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Walk-in Client Form</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-    body {
-      font-family: 'Roboto', Arial, sans-serif;
-      background-color: #1A1A1A;
-      color: #FFFFFF;
-      padding: 40px;
-      max-width: 900px;
-      margin: auto;
-      position: relative;
-      line-height: 1.6;
-    }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  padding: 50px; /* Tăng padding cho thoáng */
+}
 
-    h1 {
-      text-align: center;
-      color: #D4AF37;
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+h1 {
+  font-size: 2.8em;
+  background: linear-gradient(45deg, #D4AF37, #FFD700); /* Gradient vàng */
+  -webkit-background-clip: text;
+  color: transparent;
+}
 
-    p {
-      text-align: center;
-      color: #B0B0B0;
-      font-size: 1.1em;
-    }
+form {
+  background-color: #2A2A2A;
+  padding: 40px;
+  border-radius: 15px; /* Bo tròn lớn hơn */
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); /* Hiệu ứng glow nhẹ */
+}
 
-    form {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      background-color: #2A2A2A;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
+input, select, textarea {
+  border-radius: 10px;
+  background-color: #333333;
+  border: 1px solid #D4AF37;
+  transition: all 0.3s ease;
+}
 
-    label {
-      font-weight: bold;
-      color: #D4AF37;
-      margin-bottom: 5px;
-      display: block;
-    }
+input:hover, select:hover, textarea:hover {
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5); /* Glow khi hover */
+}
 
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-      border: 1px solid #D4AF37;
-      border-radius: 5px;
-      background-color: #333333;
-      color: #FFFFFF;
-      font-size: 1em;
-      transition: border-color 0.3s ease;
-    }
+button {
+  background: linear-gradient(45deg, #D4AF37, #FFD700); /* Gradient cho nút */
+  padding: 14px 40px;
+  border-radius: 10px;
+  transform: scale(1);
+  transition: transform 0.2s ease;
+}
 
-    input:focus, select:focus, textarea:focus {
-      border-color: #FFD700;
-      outline: none;
-    }
+button:hover {
+  transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
 
-    .full-width {
-      grid-column: span 2;
-    }
+#language-btn {
+  background: linear-gradient(45deg, #D4AF37, #FFD700);
+  border-radius: 10px;
+}
 
-    .submit-btn {
-      grid-column: span 2;
-      text-align: center;
-    }
-
-    button {
-      padding: 12px 30px;
-      background-color: #D4AF37;
-      color: #1A1A1A;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #FFD700;
-    }
-
-    fieldset {
-      border: 1px solid #D4AF37;
-      padding: 20px;
-      border-radius: 5px;
-      background-color: #2A2A2A;
-    }
-
-    legend {
-      color: #D4AF37;
-      font-weight: bold;
-      padding: 0 10px;
-    }
-
-    .inline-group {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .inline-group select, .inline-group input {
-      flex: 1;
-    }
-
-    #language-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 8px 16px;
-      background-color: #D4AF37;
-      color: #1A1A1A;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-weight: bold;
-    }
-
-    #language-btn:hover {
-      background-color: #FFD700;
-    }
-
-    #language-dropdown {
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background-color: #2A2A2A;
-      border: 1px solid #D4AF37;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      display: none;
-      flex-direction: column;
-      width: 150px;
-      border-radius: 5px;
-    }
-
-    #language-dropdown div {
-      padding: 10px;
-      color: #FFFFFF;
-      cursor: pointer;
-    }
-
-    #language-dropdown div:hover {
-      background-color: #D4AF37;
-      color: #1A1A1A;
-    }
+#language-dropdown {
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); /* Glow cho dropdown */
+}
 
     #password-modal {
       position: fixed;
