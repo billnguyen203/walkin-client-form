@@ -43,6 +43,12 @@
       padding: 40px;
       border-radius: 15px;
       box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+      transition: opacity 0.5s ease;
+    }
+
+    form.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
 
     label {
@@ -232,6 +238,13 @@
       font-weight: bold;
       color: #D4AF37;
       margin-top: 20px;
+      font-size: 1.5em;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    #result.show {
+      opacity: 1;
     }
 
     img {
@@ -242,6 +255,24 @@
       border-radius: 15px;
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
     }
+
+    #qr-code {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #qr-code img {
+      max-width: 200px;
+      border: 2px solid #D4AF37;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+    }
+
+    #qr-code p {
+      color: #D4AF37;
+      font-weight: bold;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -251,7 +282,7 @@
       <input type="password" id="password-input" placeholder="Password">
       <br>
       <button onclick="checkPassword()">Submit</button>
-      <p id="password-error">Sai mật khẩu, vui lòng thử lại!</p>
+      <p id="password-error">Wrong password, please try again!</p>
     </div>
   </div>
 
@@ -310,7 +341,6 @@
 
       <fieldset class="full-width">
         <legend data-lang-key="visa_info">Visa Information</legend>
-
         <label data-lang-key="status">Status</label>
         <select name="visa_status">
           <option value="No Visa">No Visa</option>
@@ -321,7 +351,6 @@
           <option value="Tourist">Tourist</option>
           <option value="Other">Other</option>
         </select>
-
         <label data-lang-key="visa_number">Visa Number (optional)</label>
         <input type="text" name="visa_number">
       </fieldset>
@@ -346,16 +375,23 @@
       </div>
     </form>
     <p id="result"></p>
+    <div id="qr-code">
+      <p>Quét mã QR để truy cập Form Walk-in</p>
+      <img id="qr-image" src="" alt="QR Code">
+    </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
   <script>
     const correctPassword = "auspac172swanston";
+    let currentLang = 'vi'; // Ngôn ngữ mặc định
 
     function checkPassword() {
       const input = document.getElementById('password-input').value;
       if (input === correctPassword) {
         document.getElementById('password-modal').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
+        generateQRCode(); // Tạo QR code ngay khi vào
       } else {
         document.getElementById('password-error').style.display = 'block';
       }
@@ -384,7 +420,9 @@
         source: "Nguồn",
         source_detail: "Chi tiết nguồn",
         comments: "Bình luận / Ghi chú",
-        submit: "Gửi"
+        submit: "Gửi",
+        thank_you: "Cảm ơn, dữ liệu đã được gửi!",
+        sorry: "Xin lỗi, có lỗi xảy ra, vui lòng thử lại!"
       },
       en: {
         title: "Walk-in Client Form",
@@ -402,7 +440,9 @@
         source: "Source",
         source_detail: "Source Detail",
         comments: "Comment / Note",
-        submit: "Submit"
+        submit: "Submit",
+        thank_you: "Thank you, your data has been submitted!",
+        sorry: "Sorry, an error occurred, please try again!"
       },
       zh: {
         title: "步入客户表格",
@@ -420,11 +460,14 @@
         source: "来源",
         source_detail: "来源详情",
         comments: "评论 / 备注",
-        submit: "提交"
+        submit: "提交",
+        thank_you: "谢谢，数据已提交！",
+        sorry: "抱歉，发生错误，请重试！"
       }
     };
 
     function updateLanguage(lang) {
+      currentLang = lang;
       document.querySelector('h1').textContent = translations[lang].title;
       document.querySelectorAll('[data-lang-key]').forEach(element => {
         const key = element.getAttribute('data-lang-key');
@@ -458,6 +501,40 @@
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
+    // Tạo QR code với logo tích hợp
+    function generateQRCode() {
+      const qrCodeDiv = document.getElementById('qr-image');
+      const walkInUrl = "https://billnguyen203.github.io/walkin-client-form/";
+      const logoUrl = "https://i.postimg.cc/JzMvw4By/ced6cf19-878b-41a5-8eb2-e2ccdd89d7df.jpg";
+
+      // Tạo QR code với mức sửa lỗi cao
+      QRCode.toCanvas(walkInUrl, {
+        width: 200,
+        margin: 2,
+        errorCorrectionLevel: 'H' // Mức sửa lỗi cao để QR vẫn quét được
+      }, function (err, canvas) {
+        if (err) console.error(err);
+
+        const ctx = canvas.getContext('2d');
+        const logo = new Image();
+        logo.crossOrigin = "Anonymous"; // Tránh lỗi CORS
+        logo.onload = function () {
+          const logoSize = 40; // Kích thước logo nhỏ để không che quá nhiều
+          const x = (canvas.width - logoSize) / 2;
+          const y = (canvas.height - logoSize) / 2;
+
+          // Vẽ logo lên QR code
+          ctx.fillStyle = "#FFFFFF"; // Vẽ nền trắng phía sau logo để tăng độ tương phản
+          ctx.fillRect(x - 2, y - 2, logoSize + 4, logoSize + 4); // Padding nhỏ
+          ctx.drawImage(logo, x, y, logoSize, logoSize);
+
+          // Chuyển canvas thành hình ảnh
+          qrCodeDiv.src = canvas.toDataURL('image/png');
+        };
+        logo.src = logoUrl;
+      });
+    }
+
     document.getElementById('clientForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const form = e.target;
@@ -468,16 +545,30 @@
 
       try {
         const response = await fetch('https://script.google.com/macros/s/AKfycbyTh3SjuXuj3hj2PaMW8b4q3irg5DJZ9szW89wFEIlordhO4eTE3uMztHbAnCSmOI5d/exec', {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
 
-        document.getElementById('result').innerText = "Cảm ơn, dữ liệu đã được gửi!";
-        form.reset();
+        form.classList.add('hidden');
+        const result = document.getElementById('result');
+        result.textContent = translations[currentLang].thank_you;
+        result.classList.add('show');
+        setTimeout(() => {
+          form.classList.remove('hidden');
+          result.classList.remove('show');
+          form.reset();
+        }, 3000);
       } catch (error) {
-        document.getElementById('result').innerText = "Có lỗi xảy ra, vui lòng thử lại!";
+        form.classList.add('hidden');
+        const result = document.getElementById('result');
+        result.textContent = translations[currentLang].sorry;
+        result.classList.add('show');
+        setTimeout(() => {
+          form.classList.remove('hidden');
+          result.classList.remove('show');
+        }, 3000);
         console.error("Lỗi: ", error);
       }
     });
